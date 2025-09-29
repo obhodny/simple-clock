@@ -193,9 +193,7 @@ void check_alarm2() {
     if (alarm2_hour != time_hour){
         return; // No alarm on the same hour
     } 
-
-    wdt_reset(); // Reset the watchdog timer
-
+   
     if (alarm2_minute == time_minute) {
         if (time_second % 15 == 0) {
             playBeep();
@@ -446,7 +444,7 @@ int main() {
             if (time_hour >= 21 && time_hour <= 23) {
                 pwm_set_duty_cycle(64);
             } else if ((time_hour >= 23 && time_hour <= 24) || (time_hour >= 0 && time_hour <= 6)) {
-                pwm_set_duty_cycle(0);
+                pwm_set_duty_cycle(8);
             } else if ((time_hour >= 6 && time_hour <= 7)) {
                 pwm_set_duty_cycle(64);
             } else {
