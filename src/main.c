@@ -54,27 +54,27 @@ volatile uint8_t last_time_read_minute = 0xFF;  // Track last time read
 volatile uint8_t system_awake = 1;  // Track if system is awake
 
 //char buffer_time[20];
-uint8_t time_hour, time_minute, time_second;
+volatile uint8_t time_hour, time_minute, time_second;
 
-uint8_t day_of_week;
+volatile uint8_t day_of_week;
 
 //char buffer_calendar[20];
-uint8_t calendar_day, calendar_month, calendar_year; 
+volatile uint8_t calendar_day, calendar_month, calendar_year; 
 
 //Alarm2
-uint8_t alarm2_hour, alarm2_minute;
+volatile uint8_t alarm2_hour, alarm2_minute;
 
 //char buffer_ds3231_temperature[8];
-int8_t ds3231_temperature;  
+volatile int8_t ds3231_temperature;  
 
 // Variables for DHT22 sensor
-uint8_t dht22_humidity_int, dht22_humidity_dec, dht22_temperature_int, dht22_temperature_dec;
+volatile uint8_t dht22_humidity_int, dht22_humidity_dec, dht22_temperature_int, dht22_temperature_dec;
 
 // Variables for BMP180 sensor
-float bmp180_temperature;
-float bmp180_humidity;
-float bmp180_pressure;
-float pressure_mmHg;
+volatile float bmp180_temperature;
+volatile float bmp180_humidity;
+volatile float bmp180_pressure;
+volatile float pressure_mmHg;
 
 
 void init_watchdog() {
