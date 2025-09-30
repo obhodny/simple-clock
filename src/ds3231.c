@@ -330,7 +330,7 @@ void init_alarm2_interrupt() {
 
 // Temperature function
 
-void DS3231_getTemperature(int8_t* temperature) {
+void DS3231_getTemperature(int8_t* ds3231_temperature) {
     // Start I2C communication with DS3231
     i2c_start((DS3231_ADDRESS << 1) | I2C_WRITE);
     i2c_write(0x11); // Set register pointer to 11h
@@ -339,7 +339,7 @@ void DS3231_getTemperature(int8_t* temperature) {
     i2c_start((DS3231_ADDRESS << 1) | I2C_READ);
 
     // Read the temperature data
-    *temperature = i2c_read_nack();
+    *ds3231_temperature = i2c_read_nack();
 
     // Stop I2C communication
     i2c_stop();

@@ -20,7 +20,7 @@
 #include <avr/wdt.h>
 
 #include "main.h"
-//#include "uart.h"
+#include "uart.h"
 #include "i2c.h"
 #include "lcd1602.h"
 #include "ds3231.h"
@@ -53,26 +53,15 @@ volatile uint8_t last_sensor_read_minute = 0xFF;  // Track last sensor read time
 volatile uint8_t last_time_read_minute = 0xFF;  // Track last time read
 volatile uint8_t system_awake = 1;  // Track if system is awake
 
-//char buffer_time[20];
-volatile uint8_t time_hour, time_minute, time_second;
-
-volatile uint8_t day_of_week;
-
-//char buffer_calendar[20];
-volatile uint8_t calendar_day, calendar_month, calendar_year; 
-
-//Alarm2
-volatile uint8_t alarm2_hour, alarm2_minute;
-
-//char buffer_ds3231_temperature[8];
-volatile int8_t ds3231_temperature;  
+// Variables for DS3231
+uint8_t time_hour, time_minute, time_second, day_of_week, calendar_day, calendar_month, calendar_year, alarm2_hour, alarm2_minute;
+int8_t ds3231_temperature;
 
 // Variables for DHT22 sensor
-volatile uint8_t dht22_humidity_int, dht22_humidity_dec, dht22_temperature_int, dht22_temperature_dec;
+uint8_t dht22_humidity_int, dht22_humidity_dec, dht22_temperature_int, dht22_temperature_dec;
 
 // Variables for BMP180 sensor
 volatile float bmp180_temperature;
-volatile float bmp180_humidity;
 volatile float bmp180_pressure;
 volatile float pressure_mmHg;
 
@@ -164,19 +153,19 @@ void read_datetime() {
 }
 
 void read_sensors(){     
-    // Read sensors exactly every 30 seconds
-    uint8_t do_read_sensor = (time_second % 30 == 0) ? 1 : 0;
+    // Read sensors exactly every 15 seconds
+    uint8_t do_read_sensor = (time_second % 10 == 0) ? 1 : 0;
 
     if (!do_read_sensor) {
         return;
     }
 
-    if (time_hour >= 0 && time_hour <= 6) {
+    if (time_hour >= 1 && time_hour <= 6) {
         return;
     }
 
-    // Get the latest sensor data from the DHT22
-    DHT22_Read(&dht22_humidity_int, &dht22_humidity_dec, &dht22_temperature_int, &dht22_temperature_dec);  
+    // Get the latest sensor data from the DHT22   
+    DHT22_Read(&dht22_humidity_int, &dht22_humidity_dec, &dht22_temperature_int, &dht22_temperature_dec); 
 
      // Get the latest sensor data from the BMP180       
     bmp180_temperature = BMP180_readTemperature(); // Read temperature first (required for pressure compensation)
@@ -340,7 +329,7 @@ int main() {
     DDRB |= (1 << PB5); // Set PB5 (pin 13) as output    
 
     // Initialize UART
-    // uart_init(UART_BAUD_SELECT(UART_BAUD_RATE, F_CPU));
+    uart_init(UART_BAUD_SELECT(UART_BAUD_RATE, F_CPU));
 
     // Enable global interrupts
     sei();   
@@ -391,9 +380,11 @@ int main() {
     
     hello_world(0);
 
-    while (1) {  
+    while (1) {         
 
-        wdt_reset(); // Reset the watchdog timer
+        wdt_reset(); // Reset the watchdog timer   
+        
+        read_sensors();
 
         // Change display every 10 seconds
         // current_display_mode = (time_second % 20 < 10) ? 0 : 1;
@@ -435,9 +426,7 @@ int main() {
 
         if (update_flag) {
 
-            read_datetime(); 
-
-            read_sensors();  
+            read_datetime();               
 
             check_alarm2();
 

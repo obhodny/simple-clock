@@ -43,7 +43,7 @@ void DS3231_setAlarm2(uint8_t hour, uint8_t minute);
 // void DS3231_setAlarm2_interrupt(uint8_t hour, uint8_t minute, uint8_t day);
 void DS3231_clearAlarm1(void);
 void DS3231_clearAlarm2(void);
-void DS3231_getTemperature(int8_t* temperature);
+void DS3231_getTemperature(int8_t* ds3231_temperature);
 void DS3231_getAlarm1(uint8_t* hour, uint8_t* minute, uint8_t* second);
 void DS3231_getAlarm2(uint8_t* hour, uint8_t* minute);
 void init_alarm2_interrupt(void);
