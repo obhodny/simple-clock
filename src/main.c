@@ -175,7 +175,7 @@ void read_sensors(){
 
 void check_alarm2() {   
 
-    if(day_of_week == SATURDAY) {
+    if(day_of_week == SUNDAY) {
         return; // No alarm on Saturday and Sunday
     }
     
@@ -194,28 +194,23 @@ void check_alarm2() {
             playBeep();
         }
     } 
-
-    if (alarm2_minute + 5 == time_minute) {
+    if (alarm2_minute + 2 == time_minute) {
         if (time_second % 20 == 0) {
+            playAlarmBeep();
+        }
+    } 
+
+    if (alarm2_minute + 6 == time_minute) {
+        if (time_second % 15 == 0) {
             playRingtone2();
         }
     } 
 
-    if (alarm2_minute + 10 == time_minute) {
-        if (time_second % 20 == 0) {
-            playAlarmBeep();
-        }
-    } 
-
-    if (alarm2_minute + 11 == time_minute) {
+    if (alarm2_minute + 12 == time_minute) {
         if (time_second % 15 == 0) {
             playAlarmBeep();
         }
-    }         
-
-
-
-      
+    }       
 }
 
 void update_display2() {
@@ -362,12 +357,12 @@ int main() {
     init_buttons_interrupts();
 
     // Set initial display mode    
-    // DS3231_setTime(15, 47, 0, TUESDAY);
+    // DS3231_setTime(9, 26, 0, TUESDAY);
     // DS3231_setDate(23, 9, 25);
 
-    // Set initial Alarm2 to 07:00
+    // Set initial Alarm2 to 07:30
     // DS3231_clearAlarm2();
-    // DS3231_setAlarm2(7, 0);
+    // DS3231_setAlarm2(7, 30);
 
     // Initialize ADC
     adc_init();
